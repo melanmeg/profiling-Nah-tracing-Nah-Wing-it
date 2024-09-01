@@ -43,15 +43,15 @@ services:
     depends_on:
       - init
 
-  k6-tracing:
-    container_name: k6-tracing
-    hostname: k6-tracing
-    image: ghcr.io/grafana/xk6-client-tracing:v0.0.5
-    environment:
-      - ENDPOINT=tempo:4317
-    restart: always
-    depends_on:
-      - tempo
+  # k6-tracing:
+  #   container_name: k6-tracing
+  #   hostname: k6-tracing
+  #   image: ghcr.io/grafana/xk6-client-tracing:v0.0.5
+  #   environment:
+  #     - ENDPOINT=tempo:4317
+  #   restart: always
+  #   depends_on:
+  #     - tempo
 
   otel-collector:
     container_name: otel-collector
