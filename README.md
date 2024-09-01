@@ -2,8 +2,6 @@
 
 ```bash
 # ref: https://github.com/melanmeg/k8s_1-31_on_nobel
-# ref: https://github.com/grafana/tempo/blob/main/example/docker-compose/local/docker-compose.yaml
-
 # ./composeは検証用
 ```
 
