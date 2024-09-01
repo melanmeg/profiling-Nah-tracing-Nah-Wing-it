@@ -2,7 +2,7 @@ services:
   init:
     container_name: init
     hostname: init
-    image: &tempoImage grafana/tempo:latest
+    image: &tempoImage grafana/tempo:2.6.0-rc.1
     user: root
     entrypoint:
       - "chown"
@@ -32,7 +32,7 @@ services:
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./shared/tempo.yaml:/etc/tempo.yaml
-      - ./tempo-data:/var/tempo
+      - ./volumes/tempo:/var/tempo
     ports:
       - "14268:14268"  # jaeger ingest
       - "3200:3200"   # tempo
@@ -53,10 +53,16 @@ services:
     depends_on:
       - tempo
 
+  otel-collector:
+    image: otel/opentelemetry-collector:0.86.0
+    command: [ "--config=/etc/otel-collector.yaml" ]
+    volumes:
+      - ./otel-collector.yaml:/etc/otel-collector.yaml
+
   prometheus:
     container_name: prometheus
     hostname: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.54.1
     command:
       - --config.file=/etc/prometheus.yaml
       - --web.enable-remote-write-receiver
@@ -69,4 +75,4 @@ services:
 
 networks:
   default:
-    name: my-network
+    name: grafana
