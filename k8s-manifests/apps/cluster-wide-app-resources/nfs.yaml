@@ -14,7 +14,7 @@ spec:
       values: |
         replicaCount: 1
         nfs:
-          server: 192.168.11.11
+          server: 192.168.11.12
           path: /mnt/nfsshare/k8s/share
           reclaimPolicy: Retain
         storageClass:
