@@ -23,6 +23,6 @@
 - name: Execute helm
   ansible.builtin.shell: |
     helm install argocd argo/argocd-apps \
-        --version 1.4.1 \
+        --version 1.6.2 \
         --values /tmp/argocd-apps-helm-chart-values.yaml
   ignore_errors: true

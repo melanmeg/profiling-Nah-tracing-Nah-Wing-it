@@ -10,6 +10,7 @@ variables:
         - cp/ha-main.yml
         - cp/setup.yml
         - cp/cilium.yml
+        - cp/argocd.yml
     cp_join:
       tasks:
         - cp/ha-backend.yml

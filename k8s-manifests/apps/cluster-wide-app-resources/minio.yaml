@@ -36,7 +36,7 @@ spec:
   source:
     chart: minio
     repoURL: https://charts.min.io/ # ref: https://artifacthub.io/packages/helm/minio-official/minio
-    targetRevision: 5.0.14
+    targetRevision: 8.0.10
     helm:
       releaseName: minio
       values: |
