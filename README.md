@@ -17,3 +17,35 @@
 ・loki
 ・otel
 ```
+
+- マイグレーションコマンド
+```bash
+$ kubeadm config migrate --old-config join_kubeadm_cp.yaml --new-config new_join_kubeadm_cp.yaml
+```
+
+- Memo
+```bash
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kube-scheduler-configmap-reader
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["list", "get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-scheduler-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kube-scheduler-configmap-reader  # 新しい ClusterRole に変更
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: system:kube-scheduler
+```
+
+`kubectl auth can-i list configmaps --as system:kube-scheduler`

@@ -5,7 +5,7 @@ set -eux
 
 ARCH="amd64"
 OS="linux"
-CONTAINERD_VERSION="2.0.0-rc.3"
+CONTAINERD_VERSION="2.0.0-rc.4"
 RUNC_VERSION="1.1.13"
 CNI_VERSION="1.5.1"
 
