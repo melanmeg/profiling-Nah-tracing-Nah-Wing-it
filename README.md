@@ -49,3 +49,8 @@ subjects:
 ```
 
 `kubectl auth can-i list configmaps --as system:kube-scheduler`
+
+```bash
+kubectl label node k8s-wk-4 node-role.kubernetes.io/worker=
+kubectl label node k8s-wk-5 node-role.kubernetes.io/worker=
+```
