@@ -1,6 +1,7 @@
-apiVersion: kubeadm.k8s.io/v1beta3
+apiVersion: kubeadm.k8s.io/v1beta4
 caCertPath: /etc/kubernetes/pki/ca.crt
 controlPlane:
+  certificateKey: {{ KUBEADM_UPLOADED_CERTS }}
   localAPIEndpoint:
     advertiseAddress: {{ NODE_IP_1 }}
     bindPort: 6443
@@ -14,6 +15,15 @@ kind: JoinConfiguration
 nodeRegistration:
   criSocket: unix://{{ CRI_SOCKET_PATH }}
   imagePullPolicy: IfNotPresent
+  imagePullSerial: true
   taints:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/control-plane
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+timeouts:
+  controlPlaneComponentHealthCheck: 4m0s
+  discovery: 5m0s
+  etcdAPICall: 2m0s
+  kubeletHealthCheck: 4m0s
+  kubernetesAPICall: 1m0s
+  tlsBootstrap: 5m0s
+  upgradeManifests: 5m0s

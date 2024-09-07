@@ -20,7 +20,9 @@
 
 - マイグレーションコマンド
 ```bash
-$ kubeadm config migrate --old-config join_kubeadm_cp.yaml --new-config new_join_kubeadm_cp.yaml
+kubeadm config migrate --old-config /tmp/init_kubeadm.yaml --new-config new_init_kubeadm.yaml
+kubeadm config migrate --old-config /tmp/join_kubeadm_cp.yaml --new-config new_join_kubeadm_cp.yaml
+kubeadm config migrate --old-config /tmp/join_kubeadm_wk.yaml --new-config new_join_kubeadm_wk.yaml
 ```
 
 - Memo

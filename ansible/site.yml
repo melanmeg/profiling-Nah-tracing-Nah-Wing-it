@@ -61,7 +61,7 @@
 - name: cp-after
   hosts: cp
   remote_user: "{{ USER }}"
-  become: true
+  become: false
   vars_files:
     - ./env.yml
     - ./vars.yml

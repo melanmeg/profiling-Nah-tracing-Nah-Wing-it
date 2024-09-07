@@ -1,0 +1,5 @@
+- name: shell
+  ansible.builtin.shell: kubectl label node k8s-wk-4 node-role.kubernetes.io/worker=
+
+- name: shell
+  ansible.builtin.shell: kubectl label node k8s-wk-5 node-role.kubernetes.io/worker=

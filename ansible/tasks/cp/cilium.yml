@@ -7,7 +7,7 @@
 - name: Execute helm
   ansible.builtin.shell: |
     helm install cilium cilium/cilium \
-        --version 1.17.0-pre.0 \
+        --version 1.16.1 \
         --namespace kube-system \
         --set kubeProxyReplacement=true \
         --set k8sServiceHost={{ KUBE_API_SERVER_VIP }} \

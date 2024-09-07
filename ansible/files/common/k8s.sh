@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eux
 
-KUBE_VERSION=1.31.0-1.1
-KUBE_KEY_VERSION=v1.31
+KUBE_VERSION=1.30.4-1.1
+KUBE_KEY_VERSION=v1.30
 
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
