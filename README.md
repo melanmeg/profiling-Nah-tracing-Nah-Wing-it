@@ -1,6 +1,4 @@
-# Hey yo
-
-- profiling-Nah-tracing-Nah-Wing-it
+# profiling-Nah-tracing-Nah-Wing-it
 
 ```bash
 # ref: https://github.com/melanmeg/k8s_1-31_on_nobel
@@ -12,9 +10,6 @@
 
 ```bash
 タスク
-・grafana
-・minio
-・loki
 ・otel
 ```
 
@@ -51,8 +46,3 @@ subjects:
 ```
 
 `kubectl auth can-i list configmaps --as system:kube-scheduler`
-
-```bash
-kubectl label node k8s-wk-4 node-role.kubernetes.io/worker=
-kubectl label node k8s-wk-5 node-role.kubernetes.io/worker=
-```

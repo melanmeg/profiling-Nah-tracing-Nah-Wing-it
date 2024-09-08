@@ -67,3 +67,43 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 2m
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: misskey-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/melanmeg/profiling-Nah-tracing-Nah-Wing-it
+        revision: main
+        directories:
+          - path: k8s-manifests/apps/myapp/misskey
+  template:
+    metadata:
+      name: "{{path.basenameNormalized}}"
+      namespace: argocd
+    spec:
+      project: misskey
+      source:
+        repoURL: https://github.com/melanmeg/profiling-Nah-tracing-Nah-Wing-it
+        targetRevision: main
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: misskey
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: true
+        syncOptions:
+          - CreateNamespace=true
+          - Replace=true
+        retry:
+          limit: -1
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 2m

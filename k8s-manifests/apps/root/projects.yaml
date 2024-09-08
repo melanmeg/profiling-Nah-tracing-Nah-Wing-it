@@ -29,3 +29,21 @@ spec:
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: misskey
+  namespace: argocd
+spec:
+  description: misskey yeahyeah
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: misskey
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
