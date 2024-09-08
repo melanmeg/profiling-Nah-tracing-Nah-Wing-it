@@ -167,17 +167,10 @@ spec:
           ports:
             - containerPort: 443
           volumeMounts:
-            - name: tls-certs
-              mountPath: /etc/nginx/ssl
-              readOnly: true
             - name: nginx
               mountPath: /etc/nginx/conf.d/misskey.conf
               subPath: misskey.conf
       volumes:
-        - name: tls-certs
-          secret:
-            # secretName: misskey-nginx-tls-secret
-            secretName: letsencript
         - name: nginx
           configMap:
             name: nginx
