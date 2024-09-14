@@ -29,5 +29,5 @@ def generate_script(template_path, output_path, **kwargs):
     with open(output_path, 'w') as output_file:
         output_file.write(rendered_script)
 
-generate_script('../keepalived/template.conf', '../keepalived/keepalived_master.conf', lists=lists, WK_IP_1=WK_IP_1, WK_IP_3=WK_IP_3, state='MASTER', priority='101')
+generate_script('../keepalived/template.conf', '../keepalived/keepalived_primary.conf', lists=lists, WK_IP_1=WK_IP_1, WK_IP_3=WK_IP_3, state='PRIMARY', priority='101')
 generate_script('../keepalived/template.conf', '../keepalived/keepalived_backup.conf', lists=lists, WK_IP_1=WK_IP_1, WK_IP_3=WK_IP_3, state='BACKUP', priority='102')

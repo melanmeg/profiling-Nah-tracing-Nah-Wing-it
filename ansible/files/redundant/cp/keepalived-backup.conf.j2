@@ -16,7 +16,7 @@ vrrp_instance LB_VIP {
       auth_type AH
       auth_pass zaq12wsx	# Password for accessing vrrpd. Same on all devices
   }
-  unicast_src_ip {{ NODE_IP_1 }} # Private IP address of master
+  unicast_src_ip {{ NODE_IP_1 }} # Private IP address of primary
   unicast_peer {
       {{ NODE_IP_3 }}		# Private IP address of the backup haproxy
   }

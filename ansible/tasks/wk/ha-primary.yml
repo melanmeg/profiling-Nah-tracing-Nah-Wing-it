@@ -19,7 +19,7 @@
 
 - name: copy
   ansible.builtin.copy:
-    src: ./files/redundant/wk/keepalived/keepalived_master.conf
+    src: ./files/redundant/wk/keepalived/keepalived_primary.conf
     dest: /etc/keepalived/keepalived.conf
     mode: "0644"
   ignore_errors: true
