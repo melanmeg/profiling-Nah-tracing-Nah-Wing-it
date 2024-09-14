@@ -19,7 +19,7 @@
 
 - name: template
   ansible.builtin.template:
-    src: ./files/redundant/cp/keepalived.conf.j2
+    src: ./files/redundant/cp/keepalived-backup.conf.j2
     dest: /etc/keepalived/keepalived.conf
   ignore_errors: true
 

@@ -7,7 +7,7 @@ variables:
         - common/k8s.yml
     cp:
       tasks:
-        - cp/ha-main.yml
+        - cp/ha-primary.yml
         - cp/setup.yml
     cp_join:
       tasks:
@@ -15,7 +15,7 @@ variables:
         - cp/join.yml
     wk:
       tasks:
-        - wk/ha-main.yml
+        - wk/ha-primary.yml
         - wk/join.yml
     wk_backup:
       tasks:
