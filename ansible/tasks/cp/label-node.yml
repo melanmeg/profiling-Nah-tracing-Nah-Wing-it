@@ -1,4 +1,7 @@
 - name: shell
+  ansible.builtin.shell: kubectl label node k8s-cp-5 node-role.kubernetes.io/control-plane=
+
+- name: shell
   ansible.builtin.shell: kubectl label node k8s-wk-4 node-role.kubernetes.io/worker=
 
 - name: shell
