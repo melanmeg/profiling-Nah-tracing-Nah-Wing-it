@@ -1,4 +1,5 @@
 apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
 bootstrapTokens:
 - description: kubeadm bootstrap token
   groups:
@@ -8,7 +9,6 @@ bootstrapTokens:
   usages:
   - signing
   - authentication
-kind: InitConfiguration
 localAPIEndpoint:
   advertiseAddress: {{ NODE_IP_1 }}
   bindPort: 6443
@@ -21,6 +21,7 @@ nodeRegistration:
 ---
 apiServer: {}
 apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controlPlaneEndpoint: {{ KUBE_API_SERVER_VIP }}:8443
@@ -32,7 +33,6 @@ etcd:
   local:
     dataDir: /var/lib/etcd
 imageRepository: registry.k8s.io
-kind: ClusterConfiguration
 kubernetesVersion: v{{ KUBE_VERSION }}
 networking:
   dnsDomain: cluster.local

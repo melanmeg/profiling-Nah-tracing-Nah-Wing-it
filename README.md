@@ -20,7 +20,17 @@ kubeadm config migrate --old-config /tmp/join_kubeadm_cp.yaml --new-config new_j
 kubeadm config migrate --old-config /tmp/join_kubeadm_wk.yaml --new-config new_join_kubeadm_wk.yaml
 ```
 
-- Memo
+- Memo1(v1.30)
+- ref: https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#steps-for-the-rest-of-the-control-plane-nodes-1
+- ref: https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#manual-certs
+- ref: https://www.server-world.info/query?os=Ubuntu_24.04&p=kubernetes&f=8
+```bash
+$ kubeadm token create --print-join-command
+kubeadm join 192.168.11.110:8443 --token ey544l.7gvqjml99v08t5k9 --discovery-token-ca-cert-hash sha256:cfd36a88a78d469cf521998a4891a0317a75889f2e73c338ddbcba9dcee47754
+
+```
+
+- Memo2
 ```bash
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

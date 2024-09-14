@@ -11,8 +11,8 @@ variables:
         - cp/setup.yml
     cp_join:
       tasks:
-        # - cp/ha-backend.yml
-        # - cp/join.yml
+        - cp/ha-backend.yml
+        - cp/join.yml
     wk:
       tasks:
         - wk/ha-main.yml
