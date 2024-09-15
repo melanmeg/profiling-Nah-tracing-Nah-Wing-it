@@ -65,3 +65,6 @@
       source <(kubectl completion bash)
       alias k='kubectl'
       complete -F __start_kubectl k
+
+- name: shell
+  ansible.builtin.shell: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash

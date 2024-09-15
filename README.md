@@ -25,6 +25,9 @@ kubeadm config migrate --old-config /tmp/join_kubeadm_wk.yaml --new-config new_j
 - ref: https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#manual-certs
 - ref: https://www.server-world.info/query?os=Ubuntu_24.04&p=kubernetes&f=8
 ```bash
+$ kubeadm init phase upload-certs --upload-certs
+1e6ddeb7e0f1899e2272f69c13c8fa4bc3d4c9cd4f8f33837f210ae2ac889587
+
 $ kubeadm token create --print-join-command
 kubeadm join 192.168.11.110:8443 --token ey544l.7gvqjml99v08t5k9 --discovery-token-ca-cert-hash sha256:cfd36a88a78d469cf521998a4891a0317a75889f2e73c338ddbcba9dcee47754
 
