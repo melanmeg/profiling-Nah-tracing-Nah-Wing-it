@@ -2,7 +2,7 @@ apiVersion: kubeadm.k8s.io/v1beta3
 caCertPath: /etc/kubernetes/pki/ca.crt
 discovery:
   bootstrapToken:
-    apiServerEndpoint: {{ KUBE_API_SERVER_VIP }}:8443
+    apiServerEndpoint: {{ KUBE_API_SERVER_VIP }}:6443
     token: {{ KUBEADM_BOOTSTRAP_TOKEN }}
     unsafeSkipCAVerification: true
   tlsBootstrapToken: {{ KUBEADM_BOOTSTRAP_TOKEN }}

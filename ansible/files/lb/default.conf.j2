@@ -1,0 +1,92 @@
+upstream misskey-3000 {
+    server {{ NODE_IP_1 }}:30087;
+    server {{ NODE_IP_2 }}:30087;
+    server {{ NODE_IP_3 }}:30087;
+}
+
+upstream argocd {
+    server {{ NODE_IP_1 }}:30041;
+    server {{ NODE_IP_2 }}:30041;
+    server {{ NODE_IP_3 }}:30041;
+}
+
+upstream grafana {
+    server {{ NODE_IP_1 }}:30042;
+    server {{ NODE_IP_2 }}:30042;
+    server {{ NODE_IP_3 }}:30042;
+}
+
+upstream minio {
+    server {{ NODE_IP_1 }}:30044;
+    server {{ NODE_IP_2 }}:30044;
+    server {{ NODE_IP_3 }}:30044;
+}
+
+upstream postgres-operator-ui {
+    server {{ NODE_IP_1 }}:30049;
+    server {{ NODE_IP_2 }}:30049;
+    server {{ NODE_IP_3 }}:30049;
+}
+
+upstream misskey-https {
+    server {{ NODE_IP_1 }}:30085;
+    server {{ NODE_IP_2 }}:30085;
+    server {{ NODE_IP_3 }}:30085;
+}
+
+upstream misskey-http {
+    server {{ NODE_IP_1 }}:30086;
+    server {{ NODE_IP_2 }}:30086;
+    server {{ NODE_IP_3 }}:30086;
+}
+
+
+server {
+    listen 3000;
+    server_name _;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    location / {
+        proxy_pass http://misskey-3000;
+    }
+}
+
+server {
+    listen 80;
+    listen 443;
+    server_name _;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    
+    location /argocd/ {
+        proxy_pass http://argocd;
+    }
+    
+    location /grafana/ {
+        proxy_pass http://grafana;
+    }
+    
+    location /minio/ {
+        proxy_pass http://minio;
+    }
+    
+    location /postgres-operator-ui/ {
+        proxy_pass http://postgres-operator-ui;
+    }
+    
+    location /misskey-https/ {
+        proxy_pass http://misskey-https;
+    }
+    
+    location /misskey-http/ {
+        proxy_pass http://misskey-http;
+    }
+    
+}

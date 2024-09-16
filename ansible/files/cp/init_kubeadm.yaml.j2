@@ -9,9 +9,6 @@ bootstrapTokens:
   usages:
   - signing
   - authentication
-localAPIEndpoint:
-  advertiseAddress: {{ NODE_IP_1 }}
-  bindPort: 6443
 nodeRegistration:
   criSocket: unix://{{ CRI_SOCKET_PATH }}
   imagePullPolicy: IfNotPresent
@@ -24,7 +21,7 @@ apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: {{ KUBE_API_SERVER_VIP }}:8443
+controlPlaneEndpoint: {{ KUBE_API_SERVER_VIP }}:6443
 controllerManager:
   extraArgs:
     bind-address: 0.0.0.0

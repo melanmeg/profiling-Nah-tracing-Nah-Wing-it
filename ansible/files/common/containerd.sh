@@ -27,4 +27,10 @@ else
   sudo sed -i -e "s/SystemdCgroup \= false/SystemdCgroup \= true/g" /etc/containerd/config.toml
 fi
 
+if grep -q 'sandbox_image = "registry.k8s.io/pause:3.9"' "/etc/containerd/config.toml"; then
+  echo "Config found, skip rewriting..."
+else
+  sudo sed -i -e 's|^\([[:space:]]*sandbox_image = \).*|\1"registry.k8s.io/pause:3.9"|' /etc/containerd/config.toml
+fi
+
 sudo systemctl restart containerd

@@ -1,0 +1,42 @@
+upstream misskey-3000 {
+    server {{ '{{ NODE_IP_1 }}' }}:30087;
+    server {{ '{{ NODE_IP_2 }}' }}:30087;
+    server {{ '{{ NODE_IP_3 }}' }}:30087;
+}
+{% for service, port in lists %}
+upstream {{ service }} {
+    server {{ '{{ NODE_IP_1 }}' }}:{{ port }};
+    server {{ '{{ NODE_IP_2 }}' }}:{{ port }};
+    server {{ '{{ NODE_IP_3 }}' }}:{{ port }};
+}
+{% endfor %}
+
+server {
+    listen 3000;
+    server_name _;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    location / {
+        proxy_pass http://misskey-3000;
+    }
+}
+
+server {
+    listen 80;
+    listen 443;
+    server_name _;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    {% for service, _ in lists %}
+    location /{{ service }}/ {
+        proxy_pass http://{{ service }};
+    }
+    {% endfor %}
+}
