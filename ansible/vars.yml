@@ -1,12 +1,12 @@
 variables:
+  all:
+    tasks:
+      - common/sysctl.yml
+  lb:
+    tasks:
+      - lb/nginx.yml
   k8s:
-    all:
-      tasks:
-        - common/sysctl.yml
-    lb:
-      tasks:
-        - lb/nginx.yml
-    k8s:
+    all_node:
       tasks:
         - common/nfs-client.yml
         - common/k8s.yml
@@ -16,7 +16,7 @@ variables:
     cp_join:
       tasks:
         # - cp/join.yml
-    wk:
+    worker:
       tasks:
         - wk/join.yml
     cp_after:

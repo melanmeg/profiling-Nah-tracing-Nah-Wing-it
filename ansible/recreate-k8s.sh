@@ -25,7 +25,7 @@ recreate_cluster() {
 
 run_ansible_playbook() {
     echo "Starting Running the ansible playbook."
-    ansible-playbook --key-file ~/.ssh/main -i hosts site.yml
+    ansible-playbook --key-file ~/.ssh/main -i inventory.yml site.yml
     echo "Completed Running the ansible playbook."
     echo ""
 }
