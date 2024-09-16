@@ -26,10 +26,10 @@ worker:
 
 control_plane:
   children:
-    ctrl:
-    join:
+    cp:
+    cp_join:
 
 all_node:
   children:
-    worker:
     control_plane:
+    worker:
