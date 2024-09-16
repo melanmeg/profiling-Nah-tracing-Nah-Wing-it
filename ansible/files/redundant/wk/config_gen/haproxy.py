@@ -11,9 +11,9 @@ lists = {
     'service44': [ 'minio',                 '192.168.11.244',  '80',    '30044' ],
     'service47': [ 'pyroscope',             '192.168.11.247',  '4040',  '30047' ],
     'service49': [ 'postgres-operator-ui',  '192.168.11.249',  '80',    '30049' ],
-    'service81': [ 'misskey-https',         '192.168.11.281',  '443',   '30081' ],
-    'service82': [ 'misskey-http',          '192.168.11.282',  '80',    '30082' ],
-    'service84': [ 'misskey-3000',          '192.168.11.284',  '3000',  '30084' ],
+    'service85': [ 'misskey-https',         '192.168.11.185',  '443',   '30085' ],
+    'service86': [ 'misskey-http',          '192.168.11.186',  '80',    '30086' ],
+    'service87': [ 'misskey-3000',          '192.168.11.187',  '3000',  '30087' ],
 }
 
 # config gen haproxy

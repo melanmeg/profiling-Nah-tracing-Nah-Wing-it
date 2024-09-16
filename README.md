@@ -59,3 +59,30 @@ subjects:
 ```
 
 `kubectl auth can-i list configmaps --as system:kube-scheduler`
+
+
+- Memo3
+```bash
+kubectl create clusterrolebinding kubernetes-admin-binding \
+  --clusterrole=cluster-admin --user=kubernetes-admin
+
+kubectl get clusterrolebinding
+kubectl get rolebinding --all-namespaces
+```
+
+`kubectl auth can-i list nodes --as=kubernetes-admin -A`
+
+```bash
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-admin-binding
+subjects:
+- kind: User
+  name: kubernetes-admin
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+```

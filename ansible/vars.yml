@@ -2,28 +2,24 @@ variables:
   k8s:
     all:
       tasks:
-        - common/sysctl.yml
-        - common/nfs-client.yml
-        - common/k8s.yml
+        # - common/sysctl.yml
+        # - common/nfs-client.yml
+        # - common/k8s.yml
     cp:
       tasks:
-        - cp/ha-primary.yml
-        - cp/setup.yml
+        # - cp/ha.yml
+        # - cp/setup.yml
     cp_join:
       tasks:
-        - cp/ha-backend.yml
+        # - cp/ha.yml
         - cp/join.yml
     wk:
       tasks:
-        - wk/ha-primary.yml
-        - wk/join.yml
-    wk_backup:
-      tasks:
-        - wk/ha-backup.yml
-        - wk/join.yml
+        # - wk/ha.yml
+        # - wk/join.yml
     cp_after:
       tasks:
-        - cp/label-node.yml
-        - cp/cilium.yml
-        - cp/argocd.yml
-        - cp/postgres-operator.yml
+        # - cp/label-node.yml
+        # - cp/cilium.yml
+        # - cp/argocd.yml
+        # - cp/postgres-operator.yml

@@ -22,9 +22,13 @@
     KUBEADM_BOOTSTRAP_TOKEN: "{{ KUBEADM_BOOTSTRAP_TOKEN }}"
   ignore_errors: true
 
-- name: Execute kubeadm init
-  ansible.builtin.shell: kubeadm init --config /tmp/init_kubeadm.yaml --skip-phases=addon/kube-proxy
-
+# - name: Execute kubeadm init
+#   ansible.builtin.shell: |
+#     kubeadm init --control-plane-endpoint=192.168.11.114 \
+#     --apiserver-advertise-address=192.168.11.114 \
+#     --pod-network-cidr=10.128.0.0/16 \
+#     --cri-socket=unix:///run/containerd/containerd.sock
+# kubeadm init --config /tmp/init_kubeadm.yaml --skip-phases=addon/kube-proxy
 - name: file
   ansible.builtin.file:
     path: "~/.kube"
