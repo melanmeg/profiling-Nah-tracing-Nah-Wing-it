@@ -10,7 +10,7 @@
 
 ```bash
 タスク
-・otel
+・otel, istio
 ```
 
 - マイグレーションコマンド
@@ -33,56 +33,69 @@ kubeadm join 192.168.11.110:6443 --token ey544l.7gvqjml99v08t5k9 --discovery-tok
 
 ```
 
-- Memo2
-```bash
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: kube-scheduler-configmap-reader
-rules:
-- apiGroups: [""]
-  resources: ["configmaps"]
-  verbs: ["list", "get"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: kube-scheduler-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: kube-scheduler-configmap-reader  # 新しい ClusterRole に変更
-subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: system:kube-scheduler
-```
-
 `kubectl auth can-i list configmaps --as system:kube-scheduler`
-
-
-- Memo3
-```bash
-kubectl create clusterrolebinding kubernetes-admin-binding \
-  --clusterrole=cluster-admin --user=kubernetes-admin
-
-kubectl get clusterrolebinding
-kubectl get rolebinding --all-namespaces
-```
-
 `kubectl auth can-i list nodes --as=kubernetes-admin -A`
 
 ```bash
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: kubernetes-admin-binding
-subjects:
-- kind: User
-  name: kubernetes-admin
-  apiGroup: rbac.authorization.k8s.io
-roleRef:
-  kind: ClusterRole
-  name: cluster-admin
-  apiGroup: rbac.authorization.k8s.io
+# istio
+
+
+### ref: https://istio.io/latest/docs/ambient/install/helm/
+helm repo add istio https://istio-release.storage.googleapis.com/charts
+helm repo update
+
+helm install istio-base istio/base \
+  --version 1.23.1 \
+  -n istio-system \
+  --create-namespace
+
+kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+  { kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml; }
+
+helm install istiod istio/istiod \
+  --version 1.23.1 \
+  -n istio-system \
+  --create-namespace \
+  --set profile=ambient
+
+helm install istio-cni istio/cni \
+  --version 1.23.1 \
+  -n istio-system \
+  --set profile=ambient
+
+helm install ztunnel istio/ztunnel \
+  --version 1.23.1 \
+  -n istio-system
+
+helm install istio-ingress istio/gateway \
+  --version 1.23.1 \
+  -n istio-ingress \
+  --create-namespace
+
+# $ helm ls -n istio-system
+# $ helm status istio-base -n istio-system
+# $ helm get all istio-base -n istio-system
+
+
+### ref: https://istio.io/latest/docs/ambient/getting-started/deploy-sample-app/
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo-versions.yaml
+# kubectl get pods
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
+# kubectl get gateway
+kubectl port-forward svc/bookinfo-gateway-istio 8080:80
+# http://localhost:8080/productpage
+
+
+### ref: https://istio.io/latest/docs/ambient/getting-started/secure-and-visualize/
+kubectl label namespace default istio.io/dataplane-mode=ambient
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/prometheus.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/kiali.yaml
+
+
+#
+kubectl label namespace default istio-injection=enabled
+kubectl port-forward -n istio-system svc/kiali 20001:20001
 ```
