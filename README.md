@@ -8,19 +8,19 @@
 # リソース メトリック パイプライン
 ```
 
+### タスク
 ```bash
-タスク
 ・otel, istio
 ```
 
-- マイグレーションコマンド
+### マイグレーションコマンド
 ```bash
 kubeadm config migrate --old-config /tmp/init_kubeadm.yaml --new-config new_init_kubeadm.yaml
 kubeadm config migrate --old-config /tmp/join_kubeadm_cp.yaml --new-config new_join_kubeadm_cp.yaml
 kubeadm config migrate --old-config /tmp/join_kubeadm_wk.yaml --new-config new_join_kubeadm_wk.yaml
 ```
 
-- Memo1(v1.30)
+### 適当Memo
 - ref: https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#steps-for-the-rest-of-the-control-plane-nodes-1
 - ref: https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#manual-certs
 - ref: https://www.server-world.info/query?os=Ubuntu_24.04&p=kubernetes&f=8
@@ -31,15 +31,72 @@ $ kubeadm init phase upload-certs --upload-certs
 $ kubeadm token create --print-join-command
 kubeadm join 192.168.11.110:6443 --token ey544l.7gvqjml99v08t5k9 --discovery-token-ca-cert-hash sha256:cfd36a88a78d469cf521998a4891a0317a75889f2e73c338ddbcba9dcee47754
 
+kubectl auth can-i list configmaps --as system:kube-scheduler
+kubectl auth can-i list nodes --as=kubernetes-admin -A
 ```
 
-`kubectl auth can-i list configmaps --as system:kube-scheduler`
-`kubectl auth can-i list nodes --as=kubernetes-admin -A`
+
+### istio入門メモ
+```bash
+Available Commands:
+  controlz     Open ControlZ web UI
+  envoy        Open Envoy admin web UI
+  grafana      Open Grafana web UI
+  istiod-debug Open Istio debug web UI
+  jaeger       Open Jaeger web UI
+  kiali        Open Kiali web UI
+  prometheus   Open Prometheus web UI
+  proxy        Open admin web UI for a proxy
+  skywalking   Open SkyWalking UI
+  zipkin       Open Zipkin web UI
+```
 
 ```bash
-# istio
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.23.1
+export PATH=$PWD/bin:$PATH
+istioctl install -f samples/bookinfo/demo-profile-no-gateways.yaml -y
+kubectl label namespace default istio-injection=enabled
+kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+{ kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.1.0" | kubectl apply -f -; }
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+kubectl apply -f samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
 
+# App
+# kubectl port-forward svc/bookinfo-gateway-istio 8080:80
+# ssh -N -L 8080:localhost:8080 cp4
+# http://localhost:8080/productpage
 
+# send request
+# for i in $(seq 1 100); do curl -s -o /dev/null "http://localhost:8080/productpage"; done
+
+kubectl apply -f samples/addons
+kubectl rollout status deployment/kiali -n istio-system
+# Kiali
+# istioctl d kiali
+# ssh -N -L 8081:localhost:20001 cp4
+# http://localhost:8081/kiali
+
+# Grafana
+# istioctl d grafana
+# ssh -N -L 8082:localhost:3000 cp4
+# http://localhost:8082
+
+# Jaeger
+# istioctl d jaeger
+# ssh -N -L 8083:localhost:16686 cp4
+# http://localhost:8083
+
+# envoy
+# istioctl d envoy deployment/productpage-v1
+# ssh -N -L 8084:localhost:15000 cp4
+# http://localhost:8084
+```
+
+- with helm
+```bash
 ### ref: https://istio.io/latest/docs/ambient/install/helm/
 helm repo add istio https://istio-release.storage.googleapis.com/charts
 helm repo update
@@ -75,27 +132,4 @@ helm install istio-ingress istio/gateway \
 # $ helm ls -n istio-system
 # $ helm status istio-base -n istio-system
 # $ helm get all istio-base -n istio-system
-
-
-### ref: https://istio.io/latest/docs/ambient/getting-started/deploy-sample-app/
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo.yaml
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo-versions.yaml
-# kubectl get pods
-
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
-kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
-# kubectl get gateway
-kubectl port-forward svc/bookinfo-gateway-istio 8080:80
-# http://localhost:8080/productpage
-
-
-### ref: https://istio.io/latest/docs/ambient/getting-started/secure-and-visualize/
-kubectl label namespace default istio.io/dataplane-mode=ambient
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/prometheus.yaml
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/kiali.yaml
-
-
-#
-kubectl label namespace default istio-injection=enabled
-kubectl port-forward -n istio-system svc/kiali 20001:20001
 ```
