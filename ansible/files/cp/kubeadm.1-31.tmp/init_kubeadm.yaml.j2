@@ -35,7 +35,7 @@ caCertificateValidityPeriod: 87600h0m0s
 certificateValidityPeriod: 8760h0m0s
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: {{ KUBE_API_SERVER_VIP }}:8443
+controlPlaneEndpoint: {{ KUBE_API_SERVER_VIP }}:6443
 controllerManager:
   extraArgs:
     - name: bind-address

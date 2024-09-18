@@ -4,28 +4,26 @@
       - nginx
       - libnginx-mod-stream
 
+- name: file
+  ansible.builtin.file:
+    path: /etc/nginx/stream.d
+    state: directory
+    mode: "0755"
+
 - name: blockinfile
   ansible.builtin.blockinfile:
     dest: /etc/nginx/nginx.conf
     insertafter: EOF
     block: |
       stream {
-          upstream k8s-api {
-              server {{ NODE_IP_1 }}:6443;
-              server {{ NODE_IP_2 }}:6443;
-              server {{ NODE_IP_3 }}:6443;
-          }
-          server {
-              listen 6443;
-              proxy_pass k8s-api;
-          }
+          include /etc/nginx/stream.d/*.conf;
       }
   ignore_errors: true
 
 - name: template
   ansible.builtin.template:
     src: ./files/lb/default.conf.j2
-    dest: /etc/nginx/conf.d/default.conf
+    dest: /etc/nginx/stream.d/default.conf
   ignore_errors: true
 
 - name: shell
