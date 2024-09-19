@@ -23,6 +23,6 @@ variables:
       tasks:
         - cp/label-node.yml
         - cp/cilium.yml
-        # - cp/argocd.yml
-        # - cp/postgres-operator.yml
+        - cp/argocd.yml
+        - cp/postgres-operator.yml
         - cp/role.yml

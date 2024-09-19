@@ -39,11 +39,11 @@ spec:
             #       insecure: true
             #   logs_index: otel
             otlp:
-              endpoint: http://tempo-distributed:4317
+              endpoint: http://tempo-distributed-distributor.tracing:4317
               tls:
                 insecure: true
             otlphttp/prometheus:
-              endpoint: "http://prometheus:9090/api/v1/otlp"
+              endpoint: "http://prometheus-kube-prometheus-prometheus.monitoring:9090/api/v1/otlp"
               tls:
                 insecure: true
           extensions:
