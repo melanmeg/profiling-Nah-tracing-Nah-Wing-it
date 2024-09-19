@@ -133,3 +133,17 @@ helm install istio-ingress istio/gateway \
 # $ helm status istio-base -n istio-system
 # $ helm get all istio-base -n istio-system
 ```
+
+### otel入門
+```bash
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm install my-otel-demo open-telemetry/opentelemetry-demo
+kubectl port-forward svc/my-otel-demo-frontendproxy 8080:8080
+ssh -N -L 8080:localhost:8080 cp4
+# With the frontendproxy port-forward set up, you can access:
+#   Web store: http://localhost:8080/
+#   Grafana: http://localhost:8080/grafana/
+#   Load Generator UI: http://localhost:8080/loadgen/
+#   Jaeger UI: http://localhost:8080/jaeger/ui/
+
+```

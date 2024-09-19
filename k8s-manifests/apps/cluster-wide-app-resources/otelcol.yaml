@@ -1,0 +1,134 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry-collector
+  namespace: argocd
+spec:
+  project: cluster-wide-apps
+  source:
+    chart: opentelemetry-collector
+    repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+    targetRevision: 0.105.1
+    helm:
+      releaseName: opentelemetry-collector
+      values: |
+        mode: daemonset
+        image:
+          repository: otel/opentelemetry-collector-k8s
+        command:
+          name: otelcol-k8s
+        presets:
+          # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
+          kubernetesAttributes:
+            enabled: true
+          # enables the kubeletstatsreceiver and adds it to the metrics pipelines
+          kubeletMetrics:
+            enabled: false
+          # Enables the filelogreceiver and adds it to the logs pipelines
+          logsCollection:
+            enabled: false
+            includeCollectorLogs: false
+        config:
+          exporters:
+            # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
+            debug: {}
+            # opensearch:
+            #   http:
+            #     endpoint: http://otel-demo-opensearch:9200
+            #     tls:
+            #       insecure: true
+            #   logs_index: otel
+            otlp:
+              endpoint: http://tempo-distributed:4317
+              tls:
+                insecure: true
+            otlphttp/prometheus:
+              endpoint: "http://prometheus:9090/api/v1/otlp"
+              tls:
+                insecure: true
+          extensions:
+            health_check: {}
+          processors:
+            batch: {}
+            # batch/2: #二つ目の設定
+            #   send_batch_size: 1000
+            #   timeout: 10s
+            memory_limiter:
+              check_interval: 5s
+              limit_percentage: 80
+              spike_limit_percentage: 25
+          receivers:
+            jaeger:
+              protocols:
+                grpc:
+                  endpoint: ${env:MY_POD_IP}:14250
+                thrift_compact:
+                  endpoint: ${env:MY_POD_IP}:6831
+                thrift_http:
+                  endpoint: ${env:MY_POD_IP}:14268
+            otlp:
+              protocols:
+                grpc:
+                  endpoint: ${env:MY_POD_IP}:4317
+                http:
+                  endpoint: ${env:MY_POD_IP}:4318
+            prometheus:
+              config:
+                scrape_configs:
+                  - job_name: opentelemetry-collector
+                    scrape_interval: 10s
+                    static_configs:
+                      - targets:
+                          - ${env:MY_POD_IP}:8888
+            zipkin:
+              endpoint: ${env:MY_POD_IP}:9411
+          service:
+            extensions:
+              - health_check
+            pipelines:
+              logs:
+                exporters:
+                  - debug
+                processors:
+                  - memory_limiter
+                  - batch
+                receivers:
+                  - otlp
+              metrics:
+                exporters:
+                  - debug
+                processors:
+                  - memory_limiter
+                  - batch
+                receivers:
+                  - otlp
+                  - prometheus
+              traces:
+                exporters:
+                  - debug
+                processors:
+                  - memory_limiter
+                  - batch
+                receivers:
+                  - otlp
+                  - jaeger
+                  - zipkin
+            telemetry:
+              metrics:
+                address: ${env:MY_POD_IP}:8888
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: opentelemetry
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
