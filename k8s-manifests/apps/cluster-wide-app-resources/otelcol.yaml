@@ -23,11 +23,11 @@ spec:
             enabled: true
           # enables the kubeletstatsreceiver and adds it to the metrics pipelines
           kubeletMetrics:
-            enabled: false
+            enabled: true
           # Enables the filelogreceiver and adds it to the logs pipelines
           logsCollection:
-            enabled: false
-            includeCollectorLogs: false
+            enabled: true
+            includeCollectorLogs: true
         config:
           exporters:
             # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
