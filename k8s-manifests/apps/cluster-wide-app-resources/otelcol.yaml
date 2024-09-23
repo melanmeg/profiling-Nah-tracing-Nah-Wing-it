@@ -75,7 +75,7 @@ spec:
               - health_check
             pipelines:
               traces:
-                processors: [memory_limiter, transform, batch]
+                processors: [memory_limiter, batch]
                 exporters: [otlp, debug, spanmetrics]
               metrics:
                 receivers: [otlp, spanmetrics]
