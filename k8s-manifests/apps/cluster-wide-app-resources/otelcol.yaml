@@ -97,7 +97,7 @@ spec:
               tls:
                 insecure: true
             otlphttp/loki:
-              endpoint: http://loki-gateway.logging/otlp
+              endpoint: http://loki-gateway.logging/otlp/v1/logs
               tls:
                 insecure: true
           service:
