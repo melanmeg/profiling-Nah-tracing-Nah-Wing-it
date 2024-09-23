@@ -55,34 +55,26 @@ spec:
           # Write logs to Loki on OTLP.
           limits_config:
             allow_structured_metadata: true
+            reject_old_samples: true
+            reject_old_samples_max_age: 168h
+            max_cache_freshness_per_query: 10m
+            split_queries_by_interval: 15m
+            query_timeout: 300s
+            volume_enabled: true
 
           # Disable multi-tenant support
           auth_enabled: false
-
-          # -- Configure memcached as an external cache for chunk and results cache.
-          memcached:
-            chunk_cache:
-              enabled: true
-              host: "chunk-cache-memcached.logging.svc"
-              service: "memcache"
-              batch_size: 256
-              parallelism: 10
-            results_cache:
-              enabled: true
-              host: "results-cache-memcached.logging.svc"
-              service: "memcache"
-              timeout: "500ms"
-              default_validity: "12h"
 
           # S3 backend storage configuration
           storage:
             bucketNames:
               chunks: k8s-loki
               ruler: k8s-loki
+              admin: loki
             type: s3
             s3:
               endpoint: minio.minio:9000
-              region: eu-west-1
+              region: ap-northeast-1
               secretAccessKey: minio123
               accessKeyId: minio
               s3ForcePathStyle: true
@@ -92,81 +84,94 @@ spec:
                 response_header_timeout: 0s
                 insecure_skip_verify: true
 
-        # Configuration for the backend pods
-        backend:
+          # -- Configure memcached as an external cache for chunk and results cache.
+          memcached:
+            chunk_cache:
+              enabled: true
+              host: chunk-cache-memcached.logging.svc
+              service: memcache
+              batch_size: 256
+              parallelism: 10
+            results_cache:
+              enabled: true
+              host: results-cache-memcached.logging.svc
+              service: memcache
+              default_validity: 12h
+
+          # Configure the chunk and index write cache
+          chunk_store_config:
+            chunk_cache_config:
+              memcached:
+                batch_size: 256
+                parallelism: 10
+              memcached_client:
+                host: loki-chunks-cache.logging.svc
+                service: memcache
+
+          # Configure the query result cache
+          query_range:
+            cache_results: true
+            results_cache:
+              cache:
+                memcached_client:
+                  consistent_hash: true
+                  host: results-cache-memcached.logging.svc
+                  service: memcache
+                  max_idle_conns: 16
+                  timeout: 500ms
+                  update_interval: 1m
+
+          # Configure the index queries cache
+          storage_config:
+            index_queries_cache_config:
+              memcached:
+                batch_size: 100
+                parallelism: 100
+              memcached_client:
+                host: results-cache-memcached.logging.svc
+                service: memcache
+                consistent_hash: true
+
+          ingester:
+            chunk_encoding: snappy
+          tracing:
+            enabled: true
+          querier:
+            max_concurrent: 3
+
+        ingester:
           replicas: 2
-
-        # Configuration for the write
-        write:
-          # Number of replicas for the write
+        querier:
           replicas: 2
-          persistence:
-            storageClass: nfs-share
-            size: 10Gi
-
-          # Enable environment variables in config file
-          # https://grafana.com/docs/loki/latest/configuration/#use-environment-variables-in-the-configuration
-          extraArgs:
-            - '-config.expand-env=true'
-          extraEnv:
-            - name: MINIO_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: loki-minio-secret
-                  key: MINIO_ACCESS_KEY_ID
-            - name: MINIO_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: loki-minio-secret
-                  key: MINIO_SECRET_ACCESS_KEY
-
-        # Configuration for the read
-        read:
-          # Number of replicas for the read
+          maxUnavailable: 2
+        queryFrontend:
           replicas: 2
-          persistence:
-            storageClass: nfs-share
-            size: 10Gi
-
-          # Enable environment variables in config file
-          # https://grafana.com/docs/loki/latest/configuration/#use-environment-variables-in-the-configuration
-          extraArgs:
-            - '-config.expand-env=true'
-          extraEnv:
-            - name: MINIO_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: loki-minio-secret
-                  key: MINIO_ACCESS_KEY_ID
-            - name: MINIO_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: loki-minio-secret
-                  key: MINIO_SECRET_ACCESS_KEY
-
-        # Configuration for the gateway
-        gateway:
+          maxUnavailable: 1
+        queryScheduler:
+          replicas: 2
+        distributor:
+          replicas: 2
+          maxUnavailable: 2
+        compactor:
           replicas: 1
-          enabled: true
+        indexGateway:
+          replicas: 2
+          maxUnavailable: 1
 
-        # Disable mino installation
+        bloomCompactor:
+          replicas: 0
+        bloomGateway:
+          replicas: 0
         minio:
           enabled: false
-
-        # Enable Serivce Monitor
-        monitoring:
-          serviceMonitor:
-            enabled: true
-            labels:
-              release: prometheus
-            grafanaAgent:
-              installOperator: false
-          lokiCanary:
-              enabled: true
-
-        # Disable helm-test
-        test:
-          enabled: false
+        backend:
+          replicas: 0
+        read:
+          replicas: 0
+        write:
+          replicas: 0
+        singleBinary:
+          replicas: 0
   destination:
     server: "https://kubernetes.default.svc"
     namespace: logging
