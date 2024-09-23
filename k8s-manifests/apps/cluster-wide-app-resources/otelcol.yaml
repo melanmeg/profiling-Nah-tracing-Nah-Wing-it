@@ -77,7 +77,7 @@ spec:
               tls:
                 insecure: true
             prometheusremotewrite:
-              endpoint: http://<mimir-endpoint>/api/v1/push
+              endpoint: http://mimir-distributed-nginx.monitoring:80/api/v1/push
               resource_to_telemetry_conversion:
                 enabled: true
             otlphttp/loki:
