@@ -12,38 +12,33 @@ spec:
     helm:
       releaseName: opentelemetry-collector
       values: |
-        mode: daemonset
+        mode: deployment
+        replicaCount: 3
         image:
           repository: otel/opentelemetry-collector-k8s
         command:
           name: otelcol-k8s
         presets:
-          # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
-          kubernetesAttributes:
+          # enables the k8sclusterreceiver and adds it to the metrics pipelines
+          clusterMetrics:
             enabled: true
-          # enables the kubeletstatsreceiver and adds it to the metrics pipelines
-          kubeletMetrics:
+          # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
+          kubernetesEvents:
             enabled: true
-          # Enables the filelogreceiver and adds it to the logs pipelines
-          logsCollection:
-            enabled: true
-            includeCollectorLogs: true
         config:
           exporters:
             # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
             debug: {}
-            # opensearch:
-            #   http:
-            #     endpoint: http://otel-demo-opensearch:9200
-            #     tls:
-            #       insecure: true
-            #   logs_index: otel
             otlp:
-              endpoint: http://tempo-distributed-distributor.tracing:4317
+              endpoint: tempo-distributed-distributor.tracing:4317
               tls:
                 insecure: true
             otlphttp/prometheus:
               endpoint: "http://prometheus-kube-prometheus-prometheus.monitoring:9090/api/v1/otlp"
+              tls:
+                insecure: true
+            otlphttp/loki:
+              endpoint: http://loki.logging:3100/otlp
               tls:
                 insecure: true
           extensions:
@@ -58,61 +53,32 @@ spec:
               limit_percentage: 80
               spike_limit_percentage: 25
           receivers:
-            jaeger:
-              protocols:
-                grpc:
-                  endpoint: ${env:MY_POD_IP}:14250
-                thrift_compact:
-                  endpoint: ${env:MY_POD_IP}:6831
-                thrift_http:
-                  endpoint: ${env:MY_POD_IP}:14268
             otlp:
               protocols:
                 grpc:
                   endpoint: ${env:MY_POD_IP}:4317
                 http:
                   endpoint: ${env:MY_POD_IP}:4318
-            prometheus:
-              config:
-                scrape_configs:
-                  - job_name: opentelemetry-collector
-                    scrape_interval: 10s
-                    static_configs:
-                      - targets:
-                          - ${env:MY_POD_IP}:8888
-            zipkin:
-              endpoint: ${env:MY_POD_IP}:9411
+                  cors:
+                    allowed_origins:
+                      - "http://*"
+                      - "https://*"
+          connectors:
+            spanmetrics: {}
           service:
             extensions:
               - health_check
             pipelines:
-              logs:
-                exporters:
-                  - debug
-                processors:
-                  - memory_limiter
-                  - batch
-                receivers:
-                  - otlp
-              metrics:
-                exporters:
-                  - debug
-                processors:
-                  - memory_limiter
-                  - batch
-                receivers:
-                  - otlp
-                  - prometheus
               traces:
-                exporters:
-                  - debug
-                processors:
-                  - memory_limiter
-                  - batch
-                receivers:
-                  - otlp
-                  - jaeger
-                  - zipkin
+                processors: [memory_limiter, resource, transform, batch]
+                exporters: [otlp, debug, spanmetrics]
+              metrics:
+                receivers: [otlp, spanmetrics]
+                processors: [memory_limiter, resource, batch]
+                exporters: [otlphttp/prometheus, debug]
+              logs:
+                processors: [memory_limiter, resource, batch]
+                exporters: [otlphttp/loki, debug]
             telemetry:
               metrics:
                 address: ${env:MY_POD_IP}:8888
@@ -125,7 +91,7 @@ spec:
             memory: 256Mi
   destination:
     server: https://kubernetes.default.svc
-    namespace: opentelemetry
+    namespace: otel
   syncPolicy:
     automated:
       prune: true

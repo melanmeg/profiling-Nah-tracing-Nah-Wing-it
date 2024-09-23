@@ -47,6 +47,10 @@ spec:
               release: prometheus
 
         loki:
+          # Write logs to Loki on OTLP.
+          limits_config:
+            allow_structured_metadata: true
+
           # Disable multi-tenant support
           auth_enabled: false
 

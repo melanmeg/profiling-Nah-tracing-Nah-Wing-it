@@ -17,6 +17,7 @@ recreate_cluster() {
     echo ""
 
     log_and_execute "Remove the existing cluster" "k8sd.sh"
+    log_and_execute "Remove the k8s pvc data" "del-pvc.sh"
     log_and_execute "Create a new cluster" "k8sa.sh"
 
     echo "Completed recreating the k8s cluster."

@@ -147,3 +147,7 @@ ssh -N -L 8080:localhost:8080 cp4
 #   Jaeger UI: http://localhost:8080/jaeger/ui/
 
 ```
+
+- ref: https://zenn.dev/kntr_nkgm/articles/fd8306cdcf56b6
+
+![img](./img.PNG)
