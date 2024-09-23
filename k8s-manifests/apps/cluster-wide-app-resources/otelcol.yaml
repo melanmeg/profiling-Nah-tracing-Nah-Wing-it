@@ -94,7 +94,7 @@ spec:
               metrics:
                 receivers: [prometheus, otlp, spanmetrics]
                 processors: [memory_limiter, batch]
-                exporters: [prometheusremotewrite, debug]
+                exporters: [otlphttp/mimir, debug]
               logs:
                 processors: [memory_limiter, batch]
                 exporters: [otlphttp/loki, debug]
