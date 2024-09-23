@@ -12,18 +12,23 @@ spec:
     helm:
       releaseName: opentelemetry-collector
       values: |
-        mode: deployment
-        replicaCount: 1
+        mode: daemonset
         image:
           repository: otel/opentelemetry-collector-k8s
         command:
           name: otelcol-k8s
         presets:
-          # enables the k8sclusterreceiver and adds it to the metrics pipelines
-          clusterMetrics:
+          # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
+          kubernetesAttributes:
             enabled: true
-          # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
-          kubernetesEvents:
+          # enables the kubeletstatsreceiver and adds it to the metrics pipelines
+          kubeletMetrics:
+            enabled: true
+          # Enables the filelogreceiver and adds it to the logs pipelines
+          logsCollection:
+            enabled: true
+            includeCollectorLogs: true
+          hostMetrics:
             enabled: true
         config:
           exporters:
@@ -70,14 +75,14 @@ spec:
               - health_check
             pipelines:
               traces:
-                processors: [memory_limiter, resource, transform, batch]
+                processors: [memory_limiter, transform, batch]
                 exporters: [otlp, debug, spanmetrics]
               metrics:
                 receivers: [otlp, spanmetrics]
-                processors: [memory_limiter, resource, batch]
+                processors: [memory_limiter, batch]
                 exporters: [otlphttp/prometheus, debug]
               logs:
-                processors: [memory_limiter, resource, batch]
+                processors: [memory_limiter, batch]
                 exporters: [otlphttp/loki, debug]
             telemetry:
               metrics:
