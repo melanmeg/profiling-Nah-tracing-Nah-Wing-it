@@ -35,7 +35,7 @@ spec:
               s3:
                 bucket_name: k8s-alertmanager
                 access_key_id: ${AWS_ACCESS_KEY_ID}
-                endpoint: minio.minio:9000
+                endpoint: http://minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
                 http:
                   insecure_skip_verify: true
@@ -44,7 +44,7 @@ spec:
               s3:
                 bucket_name: k8s-blocks
                 access_key_id: ${AWS_ACCESS_KEY_ID}
-                endpoint: minio.minio:9000
+                endpoint: http://minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
                 http:
                   insecure_skip_verify: true
@@ -52,7 +52,7 @@ spec:
               s3:
                 bucket_name: k8s-ruler
                 access_key_id: ${AWS_ACCESS_KEY_ID}
-                endpoint: minio.minio:9000
+                endpoint: http://minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
                 http:
                   insecure_skip_verify: true
