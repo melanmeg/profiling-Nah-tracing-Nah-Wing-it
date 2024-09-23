@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: otel-collector
+  name: opentelemetry-collector
   namespace: argocd
 spec:
   project: cluster-wide-apps
@@ -10,7 +10,7 @@ spec:
     repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
     targetRevision: 0.105.1
     helm:
-      releaseName: otel-collector
+      releaseName: opentelemetry-collector
       values: |
         mode: daemonset
         image:
