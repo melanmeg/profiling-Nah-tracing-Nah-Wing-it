@@ -77,6 +77,14 @@ spec:
               check_interval: 5s
               limit_percentage: 80
               spike_limit_percentage: 25
+            metricstransform:
+              transforms:
+                - include: ^system\.cpu\.
+                  action: update
+                  operations:
+                    - action: update_label
+                      label: state
+                      new_label: cpu_state
           exporters:
             # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
             debug: {}
@@ -89,7 +97,7 @@ spec:
               tls:
                 insecure: true
             otlphttp/loki:
-              endpoint: http://loki.logging:3100/otlp
+              endpoint: http://loki-gateway.logging/otlp
               tls:
                 insecure: true
           service:
