@@ -37,6 +37,8 @@ spec:
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+                http:
+                  insecure_skip_verify: true
             blocks_storage:
               backend: s3
               s3:
@@ -44,12 +46,16 @@ spec:
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+                http:
+                  insecure_skip_verify: true
             ruler_storage:
               s3:
                 bucket_name: k8s-ruler
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+                http:
+                  insecure_skip_verify: true
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
