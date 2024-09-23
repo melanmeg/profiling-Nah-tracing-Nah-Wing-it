@@ -90,7 +90,7 @@ spec:
                 processors: [memory_limiter, batch]
                 exporters: [otlp, debug, spanmetrics]
               metrics:
-                receivers: [otlp, spanmetrics]
+                receivers: [prometheus, otlp, spanmetrics]
                 processors: [memory_limiter, batch]
                 exporters: [prometheusremotewrite, debug]
               logs:
