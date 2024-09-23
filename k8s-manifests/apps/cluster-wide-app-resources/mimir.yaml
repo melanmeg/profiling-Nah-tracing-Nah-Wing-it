@@ -60,8 +60,8 @@ spec:
             limits:
               memory: 1.4Gi
             requests:
-              cpu: 1
-              memory: 1Gi
+              cpu: 500m
+              memory: 512Mi
           statefulSet:
             enabled: true
 
@@ -74,8 +74,8 @@ spec:
             limits:
               memory: 2.1Gi
             requests:
-              cpu: 1
-              memory: 1.5Gi
+              cpu: 500m
+              memory: 512Mi
 
         distributor:
           replicas: 2
@@ -83,8 +83,8 @@ spec:
             limits:
               memory: 5.7Gi
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
 
         ingester:
           persistentVolume:
@@ -96,8 +96,8 @@ spec:
             limits:
               memory: 12Gi
             requests:
-              cpu: 3.5
-              memory: 8Gi
+              cpu: 1
+              memory: 2Gi
           topologySpreadConstraints: {}
           affinity:
             podAntiAffinity:
@@ -158,8 +158,8 @@ spec:
             limits:
               memory: 5.6Gi
             requests:
-              cpu: 2
-              memory: 4Gi
+              cpu: 1
+              memory: 2Gi
 
         query_frontend:
           replicas: 1
@@ -167,8 +167,8 @@ spec:
             limits:
               memory: 2.8Gi
             requests:
-              cpu: 2
-              memory: 2Gi
+              cpu: 1
+              memory: 1Gi
 
         ruler:
           replicas: 1
@@ -176,8 +176,8 @@ spec:
             limits:
               memory: 2.8Gi
             requests:
-              cpu: 1
-              memory: 2Gi
+              cpu: 500m
+              memory: 1Gi
 
         store_gateway:
           persistentVolume:
@@ -189,8 +189,8 @@ spec:
             limits:
               memory: 2.1Gi
             requests:
-              cpu: 1
-              memory: 1.5Gi
+              cpu: 250m
+              memory: 512Mi
           topologySpreadConstraints: {}
           affinity:
             podAntiAffinity:
@@ -219,8 +219,8 @@ spec:
             limits:
               memory: 731Mi
             requests:
-              cpu: 1
-              memory: 512Mi
+              cpu: 500m
+              memory: 256Mi
 
         gateway:
           replicas: 1
@@ -228,8 +228,8 @@ spec:
             limits:
               memory: 731Mi
             requests:
-              cpu: 1
-              memory: 512Mi
+              cpu: 500m
+              memory: 256Mi
 
   destination:
     server: https://kubernetes.default.svc
