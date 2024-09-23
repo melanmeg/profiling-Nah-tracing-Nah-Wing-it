@@ -54,13 +54,6 @@ spec:
                 - targets: ['minio.minio:9000']
             remoteWrite:
               - url: http://mimir-distributed-nginx.monitoring:80/api/v1/push
-            storageSpec:
-              volumeClaimTemplate:
-                spec:
-                  accessModes: ["ReadWriteOnce"]
-                  resources:
-                    requests:
-                      storage: 20Gi
             resources:
               requests:
                 memory: 1Gi
