@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mimir-bucket-secret
+data:
+  AWS_ACCESS_KEY_ID: bWluaW8=
+  AWS_SECRET_ACCESS_KEY: bWluaW8xMjM=
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mimir-distributed
+  namespace: argocd
+spec:
+  project: cluster-wide-apps
+  source:
+    chart: mimir-distributed
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 5.5.0-weekly.308
+    helm:
+      releaseName: mimir-distributed
+      values: |
+        global:
+          extraEnvFrom:
+            - secretRef:
+                name: mimir-bucket-secret
+          podAnnotations:
+            bucketSecretVersion: "0"
+        minio:
+          enabled: false
+        mimir:
+          structuredConfig:
+            alertmanager_storage:
+              s3:
+                bucket_name: alertmanager-bucket
+                access_key_id: ${AWS_ACCESS_KEY_ID}
+                endpoint: minio.minio:9000
+                secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+            blocks_storage:
+              backend: s3
+              s3:
+                bucket_name: blocks-bucket
+                access_key_id: ${AWS_ACCESS_KEY_ID}
+                endpoint: minio.minio:9000
+                secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+            ruler_storage:
+              s3:
+                bucket_name: ruler-bucket
+                access_key_id: ${AWS_ACCESS_KEY_ID}
+                endpoint: minio.minio:9000
+                secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

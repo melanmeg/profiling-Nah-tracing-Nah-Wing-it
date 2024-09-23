@@ -151,3 +151,9 @@ ssh -N -L 8080:localhost:8080 cp4
 - ref: https://zenn.dev/kntr_nkgm/articles/fd8306cdcf56b6
 
 ![img](./img.PNG)
+
+- ref:
+https://findy-tools.io/articles/nttdata-opentelemetry/18
+https://findy-tools.io/articles/opentelemetry/12
+https://grafana.com/docs/mimir/latest/configure/configure-otel-collector/
+https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/prometheusremotewriteexporter
