@@ -3,7 +3,6 @@ kind: Secret
 metadata:
   name: mimir-bucket-secret
   namespace: monitoring
-type: Opaque
 data:
   AWS_ACCESS_KEY_ID: bWluaW8=
   AWS_SECRET_ACCESS_KEY: bWluaW8xMjM=
@@ -34,20 +33,20 @@ spec:
           structuredConfig:
             alertmanager_storage:
               s3:
-                bucket_name: alertmanager-bucket
+                bucket_name: k8s-alertmanager
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
             blocks_storage:
               backend: s3
               s3:
-                bucket_name: blocks-bucket
+                bucket_name: k8s-blocks
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}
             ruler_storage:
               s3:
-                bucket_name: ruler-bucket
+                bucket_name: k8s-ruler
                 access_key_id: ${AWS_ACCESS_KEY_ID}
                 endpoint: minio.minio:9000
                 secret_access_key: ${AWS_SECRET_ACCESS_KEY}

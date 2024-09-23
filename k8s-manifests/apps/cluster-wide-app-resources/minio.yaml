@@ -85,12 +85,21 @@ spec:
             policy: none
           - name: k8s-pyroscope
             policy: none
+          - name: k8s-alertmanager
+            policy: none
+          - name: k8s-blocks
+            policy: none
+          - name: k8s-ruler
+            policy: none
 
         # mc Commands
         customCommands:
           - command: ilm rule add myminio/k8s-loki --expire-days 90
           - command: ilm rule add myminio/k8s-tempo --expire-days 90
           - command: ilm rule add myminio/k8s-pyroscope --expire-days 90
+          - command: ilm rule add myminio/k8s-alertmanager --expire-days 90
+          - command: ilm rule add myminio/k8s-blocks --expire-days 90
+          - command: ilm rule add myminio/k8s-ruler --expire-days 90
 
         # Minio Policies
         policies:
@@ -116,6 +125,46 @@ spec:
                   - "s3:PutObject"
                   - "s3:GetObjectTagging"
                   - "s3:PutObjectTagging"
+          - name: pyroscope
+            statements:
+              - resources:
+                  - 'arn:aws:s3:::k8s-pyroscope'
+                  - 'arn:aws:s3:::k8s-pyroscope/*'
+                actions:
+                  - "s3:DeleteObject"
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                  - "s3:PutObject"
+          - name: alertmanager
+            statements:
+              - resources:
+                  - 'arn:aws:s3:::k8s-alertmanager'
+                  - 'arn:aws:s3:::k8s-alertmanager/*'
+                actions:
+                  - "s3:DeleteObject"
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                  - "s3:PutObject"
+          - name: blocks
+            statements:
+              - resources:
+                  - 'arn:aws:s3:::k8s-blocks'
+                  - 'arn:aws:s3:::k8s-blocks/*'
+                actions:
+                  - "s3:DeleteObject"
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                  - "s3:PutObject"
+          - name: ruler
+            statements:
+              - resources:
+                  - 'arn:aws:s3:::k8s-ruler'
+                  - 'arn:aws:s3:::k8s-ruler/*'
+                actions:
+                  - "s3:DeleteObject"
+                  - "s3:GetObject"
+                  - "s3:ListBucket"
+                  - "s3:PutObject
 
         # Minio Users
         users:
