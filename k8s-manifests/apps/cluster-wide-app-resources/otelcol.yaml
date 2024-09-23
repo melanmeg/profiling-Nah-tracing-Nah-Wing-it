@@ -93,7 +93,7 @@ spec:
               tls:
                 insecure: true
             otlphttp/mimir:
-              endpoint: http://mimir-distributed-nginx.monitoring:80/otlp
+              endpoint: http://mimir-distributed-nginx.monitoring/otlp
               tls:
                 insecure: true
             otlphttp/loki:

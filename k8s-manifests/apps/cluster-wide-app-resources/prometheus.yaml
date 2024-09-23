@@ -53,7 +53,7 @@ spec:
                 static_configs:
                 - targets: ['minio.minio:9000']
             remoteWrite:
-              - url: http://mimir-distributed-nginx.monitoring:80/api/v1/push
+              - url: http://mimir-distributed-nginx.monitoring/api/v1/push
             resources:
               requests:
                 memory: 1Gi
