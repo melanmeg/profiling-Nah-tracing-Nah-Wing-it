@@ -13,7 +13,7 @@ spec:
       releaseName: opentelemetry-collector
       values: |
         mode: deployment
-        replicaCount: 3
+        replicaCount: 1
         image:
           repository: otel/opentelemetry-collector-k8s
         command:
