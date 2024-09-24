@@ -53,10 +53,10 @@ spec:
           #   enabled: true
           #   labels:
           #     release: prometheus
-        ingressController:
-          enabled: true
-        envoyConfig:
-          enabled: true
+        # ingressController:
+        #   enabled: true
+        # envoyConfig:
+        #   enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
