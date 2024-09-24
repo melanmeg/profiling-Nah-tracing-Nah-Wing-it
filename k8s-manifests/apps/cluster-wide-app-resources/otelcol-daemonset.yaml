@@ -45,28 +45,54 @@ spec:
             prometheus:
               config:
                 scrape_configs:
-                  - job_name: "otel-collector"
+                  # Otelcol
+                  - job_name: otelcol
                     scrape_interval: 5s
                     static_configs:
                       - targets: ["0.0.0.0:8888"]
-                  - job_name: k8s
+
+                  # Cilium Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cilium-metrics
+                  - job_name: my-k8s
                     kubernetes_sd_configs:
                       - role: pod
                     relabel_configs:
-                      - source_labels:
-                          [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-                        regex: "true"
+                      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
                         action: keep
+                        regex: true
+                      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                        action: replace
+                        regex: ([^:]+)(?::\d+)?;(\d+)
+                        replacement: ${1}:${2}
+                        target_label: __address__
+                    # __name__ metrics ???
                     metric_relabel_configs:
                       - source_labels: [__name__]
                         regex: "(request_duration_seconds.*|response_duration_seconds.*)"
                         action: keep
-                  - job_name: 'otel-cilium-eg'
-                    static_configs:
-                      - targets:
-                          - cilium-agent.kube-system.svc.cluster.local:9962
-                          - cilium-agent.kube-system.svc.cluster.local:9963
-                          - hubble-metrics.kube-system.svc.cluster.local:9965
+
+                  # # otel-cilium-eg
+                  # - job_name: 'otel-cilium-eg'
+                  #   static_configs:
+                  #     - targets:
+                  #         - cilium-agent.kube-system.svc.cluster.local:9962
+                  #         - cilium-agent.kube-system.svc.cluster.local:9963
+                  #         - hubble-metrics.kube-system.svc.cluster.local:9965
+
+                  # Hubble Metrics: https://docs.cilium.io/en/stable/observability/metrics/#hubble-metrics
+                  - job_name: 'kubernetes-endpoints'
+                    scrape_interval: 30s
+                    kubernetes_sd_configs:
+                      - role: endpoints
+                    relabel_configs:
+                      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+                        action: keep
+                        regex: true
+                      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+                        action: replace
+                        target_label: __address__
+                        regex: (.+)(?::\d+);(\d+)
+                        replacement: $1:$2
+
           processors:
             batch: {}
             # batch/2: #二つ目の設定
@@ -92,6 +118,7 @@ spec:
                     - action: update_label
                       label: state
                       new_label: konpeko
+
           exporters:
             # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
             debug: {}
@@ -107,6 +134,7 @@ spec:
               endpoint: http://loki-gateway.logging/otlp
               tls:
                 insecure: true
+
           service:
             pipelines:
               traces:
@@ -124,6 +152,7 @@ spec:
             telemetry:
               metrics:
                 address: 0.0.0.0:8888
+
           extensions:
             health_check: {}
           connectors:
