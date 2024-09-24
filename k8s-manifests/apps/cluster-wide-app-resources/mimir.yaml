@@ -30,6 +30,9 @@ spec:
             bucketSecretVersion: "0"
         mimir:
           structuredConfig:
+            limits:
+              # ref: https://grafana.com/docs/mimir/latest/configure/configure-out-of-order-samples-ingestion/
+              out_of_order_time_window: 5m
             common:
               storage:
                 backend: s3
