@@ -157,6 +157,24 @@ spec:
         indexGateway:
           replicas: 2
           maxUnavailable: 1
+        resultsCache:
+          allocatedMemory: 1024
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 0.5
+              memory: 512Mi
+        chunksCache:
+          allocatedMemory: 2024
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 512Mi
 
         bloomCompactor:
           replicas: 0
@@ -172,6 +190,18 @@ spec:
           replicas: 0
         singleBinary:
           replicas: 0
+
+        monitoring:
+          rules:
+            enabled: true
+          selfMonitoring:
+            enabled: true
+            grafanaAgent:
+              installOperator: false
+          lokiCanary:
+            enabled: true
+        test:
+          enabled: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: logging
