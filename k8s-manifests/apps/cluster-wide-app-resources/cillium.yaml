@@ -48,14 +48,10 @@ spec:
         operator:
           prometheus:
             enabled: true
-            serviceMonitor:
-              enabled: true
         prometheus:
           enabled: true
-          serviceMonitor:
-            enabled: true
 
-        # service mesh. GAMMA Support: https://docs.cilium.io/en/latest/network/servicemesh/index.html
+        # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
         nodePort:
           enabled: true
         l7Proxy: true
