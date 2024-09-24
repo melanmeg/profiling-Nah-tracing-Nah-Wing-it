@@ -60,7 +60,7 @@ spec:
             limits:
               memory: 1.4Gi
             requests:
-              cpu: 500m
+              cpu: 0.5
               memory: 512Mi
           statefulSet:
             enabled: true
@@ -74,7 +74,7 @@ spec:
             limits:
               memory: 2.1Gi
             requests:
-              cpu: 500m
+              cpu: 0.5
               memory: 512Mi
 
         distributor:
@@ -176,7 +176,7 @@ spec:
             limits:
               memory: 2.8Gi
             requests:
-              cpu: 500m
+              cpu: 0.5
               memory: 1Gi
 
         store_gateway:
@@ -189,7 +189,7 @@ spec:
             limits:
               memory: 2.1Gi
             requests:
-              cpu: 250m
+              cpu: 0.25
               memory: 512Mi
           topologySpreadConstraints: {}
           affinity:
@@ -219,7 +219,7 @@ spec:
             limits:
               memory: 731Mi
             requests:
-              cpu: 500m
+              cpu: 0.5
               memory: 256Mi
 
         gateway:
@@ -228,7 +228,7 @@ spec:
             limits:
               memory: 731Mi
             requests:
-              cpu: 500m
+              cpu: 0.5
               memory: 256Mi
 
   destination:
