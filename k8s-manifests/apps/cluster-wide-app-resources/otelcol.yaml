@@ -31,6 +31,9 @@ spec:
           hostMetrics:
             enabled: true
         config:
+          limits:
+            # ref: https://grafana.com/docs/mimir/latest/configure/configure-out-of-order-samples-ingestion/
+            out_of_order_time_window: 5m
           receivers:
             otlp:
               protocols:
