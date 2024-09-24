@@ -90,14 +90,14 @@ spec:
           persistentVolume:
             storageClass: "nfs-share"
             accessMode: ReadWriteOnce
-            size: 50Gi
-          replicas: 3
+            size: 20Gi
+          replicas: 2
           resources:
             limits:
-              memory: 12Gi
-            requests:
-              cpu: 1
               memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 512Mi
           topologySpreadConstraints: {}
           affinity:
             podAntiAffinity:
@@ -139,7 +139,7 @@ spec:
 
         index-cache:
           enabled: true
-          replicas: 3
+          replicas: 2
 
         metadata-cache:
           enabled: true
@@ -192,7 +192,7 @@ spec:
             storageClass: "nfs-share"
             accessMode: ReadWriteOnce
             size: 10Gi
-          replicas: 3
+          replicas: 2
           resources:
             limits:
               memory: 2.1Gi
