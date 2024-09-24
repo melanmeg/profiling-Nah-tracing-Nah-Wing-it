@@ -10,7 +10,7 @@
 
 ### タスク
 ```bash
-・otel, istio
+・istio
 ```
 
 ### マイグレーションコマンド
@@ -132,6 +132,10 @@ helm install istio-ingress istio/gateway \
 # $ helm ls -n istio-system
 # $ helm status istio-base -n istio-system
 # $ helm get all istio-base -n istio-system
+
+# Integration with Istio. ref: https://docs.cilium.io/en/latest/network/servicemesh/istio/
+
+# Grafana Beylaの出来るコト出来ないコト. ref: https://zenn.dev/kojake_300/articles/4238a66124d095
 ```
 
 ### otel入門
@@ -146,6 +150,9 @@ ssh -N -L 8080:localhost:8080 cp4
 #   Load Generator UI: http://localhost:8080/loadgen/
 #   Jaeger UI: http://localhost:8080/jaeger/ui/
 
+# New OTel tracing features in Envoy and Istio. ref: https://opentelemetry.io/blog/2024/new-otel-features-envoy-istio/
+
+# https://www.logicmonitor.jp/blog/opentelemetry-vs-prometheus
 ```
 
 - ref: https://zenn.dev/kntr_nkgm/articles/fd8306cdcf56b6
