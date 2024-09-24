@@ -44,11 +44,10 @@ spec:
         rootPassword: minio123
 
         # Minio Prometheus
-        environment:
-          # MINIO_PROMETHEUS_URL: http://prometheus-kube-prometheus-prometheus.monitoring:9090
-          # MINIO_PROMETHEUS_URL: http://mimir-distributed-nginx.monitoring/prometheus
-          # MINIO_PROMETHEUS_JOB_ID: minio-job
-          # MINIO_PROMETHEUS_AUTH_TYPE: public
+        # environment:
+        #   MINIO_PROMETHEUS_URL: http://prometheus-kube-prometheus-prometheus.monitoring:9090
+        #   MINIO_PROMETHEUS_JOB_ID: minio-job
+        #   MINIO_PROMETHEUS_AUTH_TYPE: public
 
         # Enable Serivce Monitor
         metrics:
