@@ -21,6 +21,8 @@ spec:
     helm:
       releaseName: mimir-distributed
       values: |
+        # Ingesters will only create 2h sized blocks.
+
         # ref: https://grafana.com/docs/helm-charts/mimir-distributed/latest/run-production-environment-with-helm/
         global:
           extraEnvFrom:
@@ -71,8 +73,6 @@ spec:
             enabled: true
 
         compactor:
-          # Minio bucket is always emtpy. ref: https://github.com/grafana/mimir/discussions/4187
-          compaction_interval: 1m
           persistentVolume:
             storageClass: "nfs-share"
             accessMode: ReadWriteOnce
