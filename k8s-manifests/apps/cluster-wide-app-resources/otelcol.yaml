@@ -61,6 +61,12 @@ spec:
                       - source_labels: [__name__]
                         regex: "(request_duration_seconds.*|response_duration_seconds.*)"
                         action: keep
+                  - job_name: 'otel-cilium-eg'
+                    static_configs:
+                      - targets:
+                          - cilium-agent.kube-system.svc.cluster.local:9962
+                          - cilium-agent.kube-system.svc.cluster.local:9963
+                          - hubble-metrics.kube-system.svc.cluster.local:9965
           processors:
             batch: {}
             # batch/2: #二つ目の設定
