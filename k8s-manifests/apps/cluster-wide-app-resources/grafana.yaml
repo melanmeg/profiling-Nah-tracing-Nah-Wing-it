@@ -57,22 +57,22 @@ spec:
             memory: 128Mi
 
         datasources:
-          datasources1.yaml:
-            apiVersion: 1
-            datasources:
-            - name: Prometheus
-              type: prometheus
-              uid: Prometheus
-              access: proxy
-              orgId: 1
-              url: http://prometheus-kube-prometheus-prometheus.monitoring:9090
-              basicAuth: false
-              version: 1
-              editable: false
-              jsonData:
-                httpMethod: POST
-                manageAlerts: true
-                prometheusType: Prometheus
+          # datasources1.yaml:
+          #   apiVersion: 1
+          #   datasources:
+          #   - name: Prometheus
+          #     type: prometheus
+          #     uid: Prometheus
+          #     access: proxy
+          #     orgId: 1
+          #     url: http://prometheus-kube-prometheus-prometheus.monitoring:9090
+          #     basicAuth: false
+          #     version: 1
+          #     editable: false
+          #     jsonData:
+          #       httpMethod: POST
+          #       manageAlerts: true
+          #       prometheusType: Prometheus
 
           datasources2.yaml:
             apiVersion: 1
@@ -156,9 +156,9 @@ spec:
                 httpMethod: POST
                 manageAlerts: true
                 prometheusType: Mimir
-                prometheusVersion: ">2.9.x"
-                cacheLevel: Medium
-                tlsSkipVerify: true
+                # prometheusVersion: ">2.9.x"
+                # cacheLevel: Medium
+                # tlsSkipVerify: true
 
         dashboards:
           default:
