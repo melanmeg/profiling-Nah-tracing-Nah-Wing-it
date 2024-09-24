@@ -50,11 +50,11 @@ spec:
         #   MINIO_PROMETHEUS_AUTH_TYPE: public
 
         # Enable Serivce Monitor
-        metrics:
-          serviceMonitor:
-            enabled: true
-            additionalLabels:
-              release: prometheus
+        # metrics:
+        #   serviceMonitor:
+        #     enabled: true
+        #     additionalLabels:
+        #       release: prometheus
 
         # Get root user/password from secret
         existingSecret: minio-secret
