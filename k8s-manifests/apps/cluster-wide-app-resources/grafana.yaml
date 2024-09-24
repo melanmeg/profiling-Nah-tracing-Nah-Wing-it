@@ -140,6 +140,26 @@ spec:
              uid: Pyroscope
              url: http://pyroscope-querier.pyroscope:4040
 
+          datasources5.yaml:
+            apiVersion: 1
+            datasources:
+            - name: Mimir
+              type: prometheus
+              uid: Mimir
+              access: proxy
+              orgId: 1
+              url: http://mimir-distributed-nginx.monitoring/prometheus
+              basicAuth: false
+              version: 1
+              editable: false
+              jsonData:
+                httpMethod: POST
+                manageAlerts: true
+                prometheusType: Mimir
+                prometheusVersion: ">2.9.x"
+                cacheLevel: Medium
+                tlsSkipVerify: true
+
         dashboards:
           default:
             prometheus-stats:
