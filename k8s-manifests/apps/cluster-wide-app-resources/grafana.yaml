@@ -32,10 +32,10 @@ spec:
         adminPassword: grafana
         replicas: 2
 
-        serviceMonitor:
-          enabled: true
-          labels:
-            release: prometheus
+        # serviceMonitor:
+        #   enabled: true
+        #   labels:
+        #     release: prometheus
 
         persistence:
           type: pvc
