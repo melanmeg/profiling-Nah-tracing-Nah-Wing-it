@@ -80,12 +80,12 @@ spec:
               spike_limit_percentage: 25
             metricstransform:
               transforms:
-                - include: ^system\.cpu\.
+                - include: ^system
                   action: update
                   operations:
                     - action: update_label
                       label: state
-                      new_label: cpu_state
+                      new_label: konpeko
           exporters:
             # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
             debug: {}
@@ -108,7 +108,7 @@ spec:
                 exporters: [otlp, debug, spanmetrics]
               metrics:
                 receivers: [prometheus, otlp, spanmetrics]
-                processors: [memory_limiter, batch, resource, metricstransform]
+                processors: [memory_limiter, batch]
                 exporters: [otlphttp/mimir, debug]
               logs:
                 processors: [memory_limiter, batch]
