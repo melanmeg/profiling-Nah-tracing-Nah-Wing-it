@@ -66,9 +66,9 @@ spec:
             # batch/2: #二つ目の設定
             #   send_batch_size: 1000
             #   timeout: 10s
-            resourcedetection:
-              detectors: [konpeko, otelcol]
-              override: true
+            # resourcedetection:
+            #   detectors: [otelcol]
+            #   override: true
             resource:
               attributes:
                 - key: server-type
