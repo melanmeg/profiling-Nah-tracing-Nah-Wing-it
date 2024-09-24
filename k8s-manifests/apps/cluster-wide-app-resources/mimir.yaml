@@ -43,13 +43,13 @@ spec:
                     insecure_skip_verify: true
             blocks_storage:
               s3:
-                bucket_name: mimir-blocks
+                bucket_name: k8s-blocks
             alertmanager_storage:
               s3:
-                bucket_name: mimir-alertmanager
+                bucket_name: k8s-alertmanager
             ruler_storage:
               s3:
-                bucket_name: mimir-ruler
+                bucket_name: k8s-ruler
 
         # ref: small.yaml
         alertmanager:
@@ -58,7 +58,7 @@ spec:
           replicas: 2
           resources:
             limits:
-              memory: 1.4Gi
+              memory: 1Gi
             requests:
               cpu: 0.5
               memory: 512Mi
@@ -72,7 +72,7 @@ spec:
             size: 20Gi
           resources:
             limits:
-              memory: 2.1Gi
+              memory: 2Gi
             requests:
               cpu: 0.5
               memory: 512Mi
@@ -81,10 +81,10 @@ spec:
           replicas: 2
           resources:
             limits:
-              memory: 5.7Gi
+              memory: 3Gi
             requests:
-              cpu: 1
-              memory: 2Gi
+              cpu: 0.5
+              memory: 1Gi
 
         ingester:
           persistentVolume:
@@ -164,16 +164,16 @@ spec:
           replicas: 1
           resources:
             limits:
-              memory: 5.6Gi
+              memory: 3Gi
             requests:
               cpu: 1
-              memory: 2Gi
+              memory: 1Gi
 
         query_frontend:
           replicas: 1
           resources:
             limits:
-              memory: 2.8Gi
+              memory: 2Gi
             requests:
               cpu: 1
               memory: 1Gi
@@ -182,7 +182,7 @@ spec:
           replicas: 1
           resources:
             limits:
-              memory: 2.8Gi
+              memory: 2Gi
             requests:
               cpu: 0.5
               memory: 1Gi
@@ -195,7 +195,7 @@ spec:
           replicas: 2
           resources:
             limits:
-              memory: 2.1Gi
+              memory: 2Gi
             requests:
               cpu: 0.25
               memory: 512Mi
