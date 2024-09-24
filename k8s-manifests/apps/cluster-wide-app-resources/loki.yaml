@@ -190,18 +190,6 @@ spec:
           replicas: 0
         singleBinary:
           replicas: 0
-
-        monitoring:
-          rules:
-            enabled: true
-          selfMonitoring:
-            enabled: true
-            grafanaAgent:
-              installOperator: false
-          lokiCanary:
-            enabled: true
-        test:
-          enabled: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: logging
