@@ -78,20 +78,20 @@ spec:
                   #         - cilium-agent.kube-system.svc.cluster.local:9963
                   #         - hubble-metrics.kube-system.svc.cluster.local:9965
 
-                  # Hubble Metrics: https://docs.cilium.io/en/stable/observability/metrics/#hubble-metrics
-                  - job_name: 'kubernetes-endpoints'
-                    scrape_interval: 30s
-                    kubernetes_sd_configs:
-                      - role: endpoints
-                    relabel_configs:
-                      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-                        action: keep
-                        regex: true
-                      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-                        action: replace
-                        target_label: __address__
-                        regex: (.+)(?::\d+);(\d+)
-                        replacement: $1:$2
+                  # # Hubble Metrics: https://docs.cilium.io/en/stable/observability/metrics/#hubble-metrics
+                  # - job_name: 'kubernetes-endpoints'
+                  #   scrape_interval: 30s
+                  #   kubernetes_sd_configs:
+                  #     - role: endpoints
+                  #   relabel_configs:
+                  #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+                  #       action: keep
+                  #       regex: true
+                  #     - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+                  #       action: replace
+                  #       target_label: __address__
+                  #       regex: (.+)(?::\d+);(\d+)
+                  #       replacement: $1:$2
 
           processors:
             batch: {}
