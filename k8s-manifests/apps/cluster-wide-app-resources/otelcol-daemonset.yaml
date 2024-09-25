@@ -51,24 +51,24 @@ spec:
                     static_configs:
                       - targets: ["0.0.0.0:8888"]
 
-                  # Cilium Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cilium-metrics
-                  - job_name: kubernetes-pods
-                    kubernetes_sd_configs:
-                      - role: pod
-                    relabel_configs:
-                      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-                        action: keep
-                        regex: true
-                      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-                        action: replace
-                        regex: ([^:]+)(?::\d+)?;(\d+)
-                        replacement: ${1}:${2}
-                        target_label: __address__
-                    # __name__ metrics ???
-                    metric_relabel_configs:
-                      - source_labels: [__name__]
-                        regex: "(request_duration_seconds.*|response_duration_seconds.*)"
-                        action: keep
+                  # # Cilium Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cilium-metrics
+                  # - job_name: kubernetes-pods
+                  #   kubernetes_sd_configs:
+                  #     - role: pod
+                  #   relabel_configs:
+                  #     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                  #       action: keep
+                  #       regex: true
+                  #     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                  #       action: replace
+                  #       regex: ([^:]+)(?::\d+)?;(\d+)
+                  #       replacement: ${1}:${2}
+                  #       target_label: __address__
+                  #   # __name__ metrics ???
+                  #   metric_relabel_configs:
+                  #     - source_labels: [__name__]
+                  #       regex: "(request_duration_seconds.*|response_duration_seconds.*)"
+                  #       action: keep
 
                   # # otel-cilium-eg
                   # - job_name: 'otel-cilium-eg'
