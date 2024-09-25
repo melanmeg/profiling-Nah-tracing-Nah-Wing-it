@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: cluster-wide-apps
+  source:
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 62.7.0
+    helm:
+      releaseName: prometheus
+      values: |
+        defaultRules:
+          create: false
+          rules:
+            kubeProxy: false
+        grafana:
+          enabled: false
+        prometheusOperator:
+          tls:
+            enabled: false
+          admissionWebhooks:
+            enabled: false
+        prometheus:
+          enalbed: false
+        alertmanager:
+          enalbed: false
+        kubeProxy:
+          enabled: false
+        kubeEtcd:
+          enabled: false
+          service:
+            enabled: false
+        crds:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true

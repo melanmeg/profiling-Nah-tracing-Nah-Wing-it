@@ -42,14 +42,24 @@ spec:
             enableOpenMetrics: true
             serviceMonitor:
               enabled: true
+              labels:
+                release: prometheus
             dashboards:
               enabled: true
               namespace: monitoring
         operator:
           prometheus:
             enabled: true
+            serviceMonitor:
+              enabled: true
+              labels:
+                release: prometheus
         prometheus:
           enabled: true
+          serviceMonitor:
+            enabled: true
+            labels:
+              release: prometheus
 
         # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
         nodePort:
