@@ -33,6 +33,8 @@ spec:
           enabled: false
           service:
             enabled: false
+        nodeExporter:
+          enabled: false
         crds:
           enabled: true
   destination:
