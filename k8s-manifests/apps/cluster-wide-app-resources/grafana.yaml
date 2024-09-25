@@ -174,12 +174,12 @@ spec:
           #       manageAlerts: true
           #       prometheusType: Mimir
 
-        dashboards:
-          default:
-            prometheus-stats:
-              gnetId: 2
-              revision: 2
-              datasource: Mimir
+        # dashboards:
+        #   default:
+        #     prometheus-stats:
+        #       gnetId: 2
+        #       revision: 2
+        #       datasource: Mimir
   destination:
     server: "https://kubernetes.default.svc"
     namespace: grafana
