@@ -68,14 +68,14 @@ spec:
         gatewayAPI:
           enabled: true
         # Cluster Mesh API Server Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cluster-mesh-api-server-metrics
-        # clustermesh:
-        #   apiserver:
-        #     metrics:
-        #       enabled: true
-        #       kvstoremesh:
-        #         enabled: true
-        #       etcd:
-        #         enabled: true
+        clustermesh:
+          apiserver:
+            metrics:
+              enabled: true
+              kvstoremesh:
+                enabled: true
+              etcd:
+                enabled: true
 
   destination:
     server: https://kubernetes.default.svc
