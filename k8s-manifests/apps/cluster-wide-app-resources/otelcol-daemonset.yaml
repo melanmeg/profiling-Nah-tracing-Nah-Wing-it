@@ -52,7 +52,7 @@ spec:
                       - targets: ["0.0.0.0:8888"]
 
                   # Cilium Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cilium-metrics
-                  - job_name: my-k8s
+                  - job_name: kubernetes-pods
                     kubernetes_sd_configs:
                       - role: pod
                     relabel_configs:

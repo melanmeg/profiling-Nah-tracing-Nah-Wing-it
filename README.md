@@ -160,6 +160,10 @@ ssh -N -L 8080:localhost:8080 cp4
 https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gamma/
 https://docs.cilium.io/en/stable/observability/grafana/
 https://docs.cilium.io/en/stable/observability/metrics/#metrics
+
+
+# ロードマップ
+https://docs.cilium.io/en/stable/community/roadmap/#rm-hubble-observability
 ```
 
 - ref: https://zenn.dev/kntr_nkgm/articles/fd8306cdcf56b6
