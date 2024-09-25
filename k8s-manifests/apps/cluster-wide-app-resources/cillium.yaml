@@ -61,13 +61,13 @@ spec:
             labels:
               release: prometheus
 
-        # # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
-        # nodePort:
-        #   enabled: true
-        # l7Proxy: true
-        # gatewayAPI:
-        #   enabled: true
-        # # Cluster Mesh API Server Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cluster-mesh-api-server-metrics
+        # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
+        nodePort:
+          enabled: true
+        l7Proxy: true
+        gatewayAPI:
+          enabled: true
+        # Cluster Mesh API Server Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cluster-mesh-api-server-metrics
         # clustermesh:
         #   apiserver:
         #     metrics:
