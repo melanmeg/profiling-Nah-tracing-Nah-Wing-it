@@ -40,8 +40,8 @@ spec:
             - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
             - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
             enableOpenMetrics: true
-            # serviceMonitor:
-            #   enabled: true
+            serviceMonitor:
+              enabled: true
             dashboards:
               enabled: true
               namespace: monitoring
@@ -51,12 +51,12 @@ spec:
         prometheus:
           enabled: true
 
-        # # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
-        # nodePort:
-        #   enabled: true
-        # l7Proxy: true
-        # gatewayAPI:
-        #   enabled: true
+        # service mesh. Gateway API Support: https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
+        nodePort:
+          enabled: true
+        l7Proxy: true
+        gatewayAPI:
+          enabled: true
         # # Cluster Mesh API Server Metrics: https://docs.cilium.io/en/stable/observability/metrics/#cluster-mesh-api-server-metrics
         # clustermesh:
         #   apiserver:
