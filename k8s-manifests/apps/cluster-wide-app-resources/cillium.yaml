@@ -37,13 +37,13 @@ spec:
             - http
             - port-distribution
             # Enable additional labels for L7 flows
-            - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
-            - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
-            enableOpenMetrics: true
-            serviceMonitor:
-              enabled: true
-              labels:
-                release: prometheus
+            # - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+            # - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+            # enableOpenMetrics: true
+            # serviceMonitor:
+            #   enabled: true
+            #   labels:
+            #     release: prometheus
             # dashboards:
             #   enabled: true
             #   namespace: monitoring
