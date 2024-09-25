@@ -112,7 +112,6 @@ kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
 helm install istiod istio/istiod \
   --version 1.23.1 \
   -n istio-system \
-  --create-namespace \
   --set profile=ambient
 
 helm install istio-cni istio/cni \
@@ -132,6 +131,21 @@ helm install istio-ingress istio/gateway \
 # $ helm ls -n istio-system
 # $ helm status istio-base -n istio-system
 # $ helm get all istio-base -n istio-system
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/platform/kube/bookinfo-versions.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
+
+# kubectl port-forward svc/bookinfo-gateway-istio 8080:80
+
+kubectl label namespace default istio.io/dataplane-mode=ambient
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/prometheus.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.23/samples/addons/kiali.yaml
+
+kubectl label namespace logging istio.io/dataplane-mode=ambient
 
 # Integration with Istio: https://docs.cilium.io/en/latest/network/servicemesh/istio/
 
