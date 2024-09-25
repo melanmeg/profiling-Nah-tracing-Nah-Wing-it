@@ -157,22 +157,22 @@ spec:
                 manageAlerts: true
                 prometheusType: Mimir
 
-          datasources6.yaml:
-            apiVersion: 1
-            datasources:
-            - name: Hubble
-              type: prometheus
-              uid: Hubble
-              access: proxy
-              orgId: 1
-              url: http://mimir-distributed-nginx.monitoring/prometheus
-              basicAuth: false
-              version: 1
-              editable: false
-              jsonData:
-                httpMethod: POST
-                manageAlerts: true
-                prometheusType: Mimir
+          # datasources6.yaml:
+          #   apiVersion: 1
+          #   datasources:
+          #   - name: Hubble
+          #     type: prometheus
+          #     uid: Hubble
+          #     access: proxy
+          #     orgId: 1
+          #     url: http://mimir-distributed-nginx.monitoring/prometheus
+          #     basicAuth: false
+          #     version: 1
+          #     editable: false
+          #     jsonData:
+          #       httpMethod: POST
+          #       manageAlerts: true
+          #       prometheusType: Mimir
 
         dashboards:
           default:
