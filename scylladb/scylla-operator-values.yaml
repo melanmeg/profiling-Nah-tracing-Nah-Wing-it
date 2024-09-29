@@ -1,0 +1,8 @@
+logLevel: 2
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 200m
+    memory: 32Mi

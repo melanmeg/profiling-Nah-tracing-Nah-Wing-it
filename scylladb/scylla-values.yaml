@@ -1,0 +1,21 @@
+scyllaImage:
+  tag: 6.1.1
+agentImage:
+  tag: 3.3.0@sha256:dc2684f51e961d88da5a8eac2d9f165cb7a960cbf91f67f49332e7224317c96b
+developerMode: true
+datacenter: us-east-1
+racks:
+  - name: us-east-1a
+    members: 3
+    storage:
+      storageClassName: "nfs-share"
+      capacity: 10Gi
+    resources:
+      limits:
+        cpu: 1
+        memory: 4Gi
+      requests:
+        cpu: 1
+        memory: 4Gi
+serviceMonitor:
+  create: false

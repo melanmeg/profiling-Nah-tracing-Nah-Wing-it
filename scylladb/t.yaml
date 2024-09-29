@@ -1,0 +1,20 @@
+auth_token: "jlVEyeQFEXLDniOfgrZ598phabOQslOPXbNgOuOoG9xL4xHDX3SoXvRBbY0YGXBHNn2xiJ8kDn8UPJsUumC2Bt5T15MtpI6xVQjtdBSMvywgVdDOHOITzwAhg5Vg8Rve"
+tls_mode: TLSv1.2
+https: 0.0.0.0:10000
+https_port: 10000
+# tls_cert_file:
+# tls_key_file:
+#prometheus: ':5090'
+#debug: 127.0.0.1:5112
+# cpu: 0
+logger:
+  sampling:
+    initial: 1
+    thereafter: 100
+scylla:
+  api_address: 0.0.0.0
+  api_port: 10000
+rclone:
+  checkers: 100
+  transfers: 2
+  low_level_retries: 20
